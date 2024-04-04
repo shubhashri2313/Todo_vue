@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header />
+<<<<<<< HEAD
     <div class="container mt-5">
       <h1><i class="fas fa-edit"></i> Update Todo List</h1>
       <form class="update mt-4">
@@ -27,6 +28,16 @@
         <button type="button" @click="update" class="btn btn-primary"><i class="fas fa-save"></i> Update Todo List</button>
       </form>
     </div>
+=======
+    <h1>hello user, Welcome to Update Todo List page</h1>
+    <form class="update">
+      <input type="text" v-model="todo.title" placeholder="Enter title" />
+      <input type="text" v-model="todo.description" placeholder="Enter description" />
+      <input type="text" v-model="todo.due_date" placeholder="Enter due_date" />
+      <input type="text" v-model="todo.completed" placeholder="Enter status" />
+      <button type="button" @click="update">Update Todo List</button>
+    </form>
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
   </div>
 </template>
 
@@ -41,6 +52,7 @@ export default {
   },
   data() {
     return {
+<<<<<<< HEAD
       todo: {
         title: '',
         description: '',
@@ -53,6 +65,16 @@ export default {
   watch: {
     'todo.status': 'updateCompleted',
     'todo.due_date': 'updateCompleted',
+=======
+      name: '',
+      todo: {
+        title: '',
+        description: '',
+        due_date: '',
+        completed: ''
+      }
+    }
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
   },
   methods: {
     async update() {
@@ -65,6 +87,7 @@ export default {
       } catch (error) {
         console.error("Error updating todo:", error);
       }
+<<<<<<< HEAD
     },
     updateCompleted() {
       if (this.todo.status === 'finished') {
@@ -74,23 +97,36 @@ export default {
       } else {
         this.todo.completed = '';
       }
+=======
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
     }
   },
   async mounted() {
     console.warn("mounted")
     let user = localStorage.getItem('user info');
+<<<<<<< HEAD
 
     this.name = JSON.parse(user).name;
 
     if (!user) {
       this.$router.push({ name: 'signUp' });
+=======
+    this.name = JSON.parse(user).name;
+    if (!user) {
+      this.$router.push({
+        name: 'signUp'
+      });
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
     }
     console.warn(this.$route.params.id);
     const result = await axios.get(`http://localhost:3000/todo/${this.$route.params.id}`);
     console.warn(result);
     this.todo = result.data; // prefill data
+<<<<<<< HEAD
 
     this.updateCompleted(); // initial update of completed field
+=======
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
   }
 }
 </script>

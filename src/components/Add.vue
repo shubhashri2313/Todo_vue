@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div>
     <Header />
     <div class="container mt-5">
@@ -33,6 +34,19 @@
  
  
     
+=======
+<Header/>
+<h1> hello user, Welcome to Add Todo List page</h1>
+<form class="add">
+    <input type="text"  name ="title" v-model="title" placeholder="Enter title" />
+    <input type="text"  name ="description" v-model="description" placeholder="Enter description" />
+    <input type="text"  name ="due_date" v-model="due_date" placeholder="Enter due_date" />
+    <input type="text"  name ="completed" v-model="completed" placeholder="Enter status" />
+    <button type="button" v-on:click="add">Add Todo List</button>
+</form>
+</template>
+
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
 <script>
 import axios from 'axios'
 import Header from './Header.vue'
@@ -44,18 +58,33 @@ export default {
     },
     data() {
         return {
+<<<<<<< HEAD
 
             title: '',
             description: '',
             due_date: '',
             completed: '',
 
+=======
+         
+                title:'',
+                description:'',
+                due_date:'',
+                completed:'',
+
+            
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
         };
     },
     methods: {
         async add() {
+<<<<<<< HEAD
             console.warn("add", this.title)
             let result = await axios.post("http://localhost:3000/todo", {
+=======
+            console.warn("add",this.title)
+            let result = await axios.post("http://localhost:3000/todo",{
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
                 title: this.title,
                 description: this.description,
                 due_date: this.due_date,
@@ -63,12 +92,19 @@ export default {
 
             });
             if (result.status == 201) {
+<<<<<<< HEAD
                 this.$router.push({
                     name: 'Home'
                 });
 
             }
             console.warn("result", result)
+=======
+                this.$router.push({name: 'Home' });
+               
+            }
+            console.warn("result",result)
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
         }
 
     },
@@ -76,9 +112,13 @@ export default {
         console.warn("mounted")
         let user = localStorage.getItem('user info');
         if (!user) {
+<<<<<<< HEAD
             this.$router.push({
                 name: 'signUp'
             }) // it will redirect to sign up page if user  not found
+=======
+            this.$router.push({ name: 'signUp' }) // it will redirect to sign up page if user  not found
+>>>>>>> 8542104888eab346a4873fca3487a3e2bf7ac09c
         }
     }
 
