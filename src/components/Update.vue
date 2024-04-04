@@ -1,70 +1,99 @@
 <template>
-<Header/>
-<h1>  hello user, Welcome to Update Todo List page</h1>
-<form class="update">
-    <input type="text" v-model="title" placeholder="Enter title" />
-    <input type="text" v-model="todo.description" placeholder="Enter description" />
-    <input type="text" v-model="todo.due_date" placeholder="Enter due_date" />
-    <input type="text" v-model="todo.status" placeholder="Enter status" />
-    <button type="button" v-on:click="update">update Todo List</button>
-</form>
+  <div>
+    <Header />
+    <div class="container mt-5">
+      <h1><i class="fas fa-edit"></i> Update Todo List</h1>
+      <form class="update mt-4">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" id="title" v-model="todo.title" class="form-control" placeholder="Enter title" />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" id="description" v-model="todo.description" class="form-control" placeholder="Enter description" />
+        </div>
+        <div class="mb-3">
+          <label for="due_date" class="form-label">Due Date</label>
+          <input type="date" id="due_date" v-model="todo.due_date" class="form-control" placeholder="Enter due_date" />
+        </div>
+        <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select id="status" v-model="todo.status" class="form-select">
+            <option value="todo">Todo</option>
+            <option value="in progress">In Progress</option>
+            <option value="finished">Finished</option>
+          </select>
+        </div>
+        <button type="button" @click="update" class="btn btn-primary"><i class="fas fa-save"></i> Update Todo List</button>
+      </form>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Header from './Header.vue'
- export default {
-     name: 'Update',
-    components:{
-        Header
-    },
-      data() {
-        return {
-            todo: {
-                title:'',
-                description:'',
-                due_date:'',
-                status:''
 
-            }
+export default {
+  name: 'Update',
+  components: {
+    Header
+  },
+  data() {
+    return {
+      todo: {
+        title: '',
+        description: '',
+        status: '',
+        due_date: '',
+        completed: ''
+      }
+    };
+  },
+  watch: {
+    'todo.status': 'updateCompleted',
+    'todo.due_date': 'updateCompleted',
+  },
+  methods: {
+    async update() {
+      try {
+        let result = await axios.put(`http://localhost:3000/todo/${this.$route.params.id}`, this.todo);
+        if (result.status == 200) {
+          this.$router.push({ name: 'Home' });
         }
+        console.warn("result", result);
+      } catch (error) {
+        console.error("Error updating todo:", error);
+      }
     },
-    methods: {
-        async update() {
-            console.warn("update function called",this.todo)
-            let result = await axios.put("http://localhost:3000/todo/"+this.$route.params.id, {
-                title: this.title,
-                description: this.description,
-                due_date: this.due_date,
-                completed: this.completed,
+    updateCompleted() {
+      if (this.todo.status === 'finished') {
+        this.todo.completed = 'yes';
+      } else if (new Date(this.todo.due_date) < new Date()) {
+        this.todo.completed = 'no';
+      } else {
+        this.todo.completed = '';
+      }
+    }
+  },
+  async mounted() {
+    console.warn("mounted")
+    let user = localStorage.getItem('user info');
 
-            });
-            if (result.status == 200) {
-                this.$router.push({name: 'Home' });
-               
-            }
-            console.warn("result",result)
-        }
+    this.name = JSON.parse(user).name;
 
-    },
-    async mounted() {
-         console.warn("mounted")
-         let user = localStorage.getItem('user info');
-         this.name=JSON.parse(user).name// data will store in string and then we will pass dynamically just like props
-         if (!user) {
-             this.$router.push({
-                 name: 'signUp'
-             }) // it will redirect to sign up page if user  not found
-         }
-         console.warn(this.$route.params.id)
-         const result= await axios.get("http://localhost:3000/todo/"+ this.$route.params.id);
-         console.warn(result)
-         this.todo=result.data// prefill data
+    if (!user) {
+      this.$router.push({ name: 'signUp' });
+    }
+    console.warn(this.$route.params.id);
+    const result = await axios.get(`http://localhost:3000/todo/${this.$route.params.id}`);
+    console.warn(result);
+    this.todo = result.data; // prefill data
 
-     }
- }
+    this.updateCompleted(); // initial update of completed field
+  }
+}
 </script>
 
 <style>
-
 </style>
